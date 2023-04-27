@@ -1,45 +1,51 @@
-*{
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box,
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
 }
+
 .auction-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-gap: 20px;  
-    align-items: center;
-    padding: 0px 90px;
-    justify-content: center;
-    text-align: center;
-  }
-  
-  .card {
-    flex: 1;
-    margin: 20px 20px;
-    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
-    border-radius: 15px;
-    padding: 5px;
-    background-color: rgb(50, 50, 50);   
-    box-shadow: 0 2px 4px rgb(228, 37, 117, 0.2);
-  }
-  .card h2{
-    margin: 15px 0px;
-    font-size: 28px;
-    color:#E42575;
-    font-family: sans-serif;
-  }
-  .card p{
-    color: aliceblue;
-    font-size: 16px;
-    line-height: 1.5;
-    padding: 0px 10px;
-    margin-bottom: 20px;
-    font-family: sans-serif;
-  }
-  
-  .card img {
-    width: 100%;
-    height: auto;
-    border-radius: 15px 15px 0px 0px;
-  }
- 
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 20rem);
+  grid-gap: 20px;
+  align-items: center;
+  padding: 0px 90px;
+  justify-content: center;
+  text-align: center;
+}
+
+.card {
+  flex: 1;
+  margin: 20px 20px;
+  border-radius: 15px;
+  padding: 5px;
+  background-color: rgb(50, 50, 50);
+  box-shadow: 0 2px 4px rgba(228, 37, 117, 0.2);
+}
+.card__nftName {
+  margin: 15px 0px;
+  font-size: 1.5rem;
+  color: #E42575;
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+.card__collectionName {
+  margin: 15px 0px;
+  font-size: 1rem;
+  color: #8a8a8a;
+  font-weight: 100;
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+.card__price {
+  color: rgb(255, 255, 255);
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1.5;
+  padding: 0px 10px;
+  margin-bottom: 20px;
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+.card__nftImage {
+  width: 100%;
+  height: auto;
+  border-radius: 12px 12px 0px 0px;
+}/*# sourceMappingURL=style.css.map */
