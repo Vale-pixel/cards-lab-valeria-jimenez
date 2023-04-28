@@ -1,63 +1,86 @@
-class auctionCard extends HTMLElement {
-    connectedCallback(){
-      this.getData();
+class AuctionCard extends HTMLElement {
+  constructor(){
+    super();
+    this.nfts = [];
+  }
+  connectedCallback(){
+    this.filterButtons = document.querySelectorAll('.filter-button');
+this.getData()
+  }
+  async getData(){
+try {
+      const response = await fetch('https://magic-eden-nfts-default-rtdb.firebaseio.com/products.json');
+      const data = await response.json();
+      console.log(response);
+      this.nfts = Object.values(data);
+      this.renderCards(this.nfts);
+    } catch (error) {
+      console.error(error);
     }
-  
-    async getData() {
-      try {
-        const response = await fetch('https://nftproducts.free.beeceptor.com/nfts');
-        const data = await response.json();
-        this.renderCards(data.products);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    /*
-    <div class="s-finished-auctions">
-    <div class="nft-img s"></div>
-        <img src="https://images.unsplash.com/photo-1645731504636-72725e46b26b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fG5mdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1600&q=60" alt="finished-auction-img" class="f-auction">
-        <h1 class="nft-name">UNHCR hand</h1>
-        <p class="description">Okay beards</p>
-        <div class="ended">3.00 SOL ENDED</div>
-</div>*/
-    renderCards(results) {
-      //creo el elemento auction-container en html
-      const cardContainer = document.createElement('div');
-      cardContainer.classList.add('auction-container');
-  
-  
-      results.forEach(result => {
-        //creo el elemnto card en html
-        const card = document.createElement('div');
-        card.classList.add('card');
-  
-        //constante para imagen
-        const image = document.createElement('img');
-        image.classList.add('card__nftImage')
-        image.src = result.url;
-  
-        //creo el título del producto por el nombre del nft
-        const name = document.createElement('h1');
-        name.classList.add('card__nftName')
-        name.textContent = result.name;
-  
-        const collection = document.createElement('h2');
-        collection.classList.add('card__collectionName')
-        collection.textContent = result.collection;
-        //creo elemento para la firma de la colección
-        const price = document.createElement('p');
-        price.classList.add('card__price')
-        price.textContent = `Ended: ${result.price}${" "}${result.cryptocurrency}`;
-  
-        card.appendChild(image);
-        card.appendChild(name);
-        card.appendChild(collection);
-        card.appendChild(price);
-        cardContainer.appendChild(card);
+
+    this.filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        this.filterButtons.forEach((button) => button.classList.remove('active'));
+        button.classList.add('active');
+        const selectedCategory = button.getAttribute('data-category');
+        this.filterProducts(selectedCategory);
       });
-      this.appendChild(cardContainer);
-    }
+    });
   }
   
-  customElements.define('auction-card', auctionCard);
-  
+
+ renderCards(products) {
+
+
+  const cardContainer = document.createElement('div');
+  cardContainer.classList.add('auction-container');
+
+  this.appendChild(cardContainer);
+ 
+  products.forEach(nft => {
+    console.log( 'hola')
+    
+    const card = document.createElement('div');
+    card.classList.add('card');
+
+    const nftImage = document.createElement('img');
+    nftImage.classList.add('card__nftImage');
+    nftImage.src = nft.url;
+
+    const nftName = document.createElement('h1');
+    nftName.classList.add('card__nftName');
+    nftName.textContent = nft.name;
+
+    const collectionName = document.createElement('h2');
+    collectionName.classList.add('card__collectionName');
+    collectionName.textContent = nft.collection;
+
+    const priceElement = document.createElement('p');
+    priceElement.classList.add('card__price');
+    priceElement.textContent = `${nft.price} ${nft.cryptocurrency === "SOL"}`;
+
+    card.appendChild(nftImage);
+    card.appendChild(nftName);
+    card.appendChild(collectionName);
+    card.appendChild(priceElement);
+    cardContainer.appendChild(card);
+  });
+}
+
+
+filterProducts(category) {
+  if (category === 'All') {
+    this.nfts = Object.values(this.nfts);
+  } else if (category === 'SOL' || category === 'ETH' || category === 'BTC') {
+    this.nfts = Object.values(this.nfts).filter(product => product.cryptocurrency === 'SOL');
+  } else if (category === 'price') {
+    this.nfts = Object.values(this.nfts).filter(product => product.price <= 1);
+  } else {
+    this.nfts = Object.values(this.nfts).filter(product => product.collection.toLowerCase() === category.toLowerCase());
+  }
+  this.renderCards(this.nfts);
+}
+
+}
+
+customElements.define('auction-card', AuctionCard);
